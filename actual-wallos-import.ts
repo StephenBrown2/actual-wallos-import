@@ -377,7 +377,7 @@ interface ParsedArgs {
 }
 
 /**
- * Parse command line arguments supporting both --flag and positional styles
+ * Parse command line arguments
  */
 function parseArgs(args: string[]): ParsedArgs {
   let mode: 'file' | 'api' = 'file';
@@ -402,13 +402,6 @@ function parseArgs(args: string[]): ParsedArgs {
       }
     } else if (arg.startsWith('--')) {
       console.warn(`Unknown option: ${arg}`);
-    } else {
-      // Positional argument - first one is file, second is account (legacy mode)
-      if (!filePath) {
-        filePath = arg;
-      } else if (!accountName) {
-        accountName = arg;
-      }
     }
   }
 
@@ -422,7 +415,6 @@ function printUsage(): void {
   console.error('Usage:');
   console.error('  npx ts-node actual-wallos-import.ts --file <subscriptions.json> [--account <name>]');
   console.error('  npx ts-node actual-wallos-import.ts --api [--account <name>]');
-  console.error('  npx ts-node actual-wallos-import.ts <subscriptions.json> [account-name]  (legacy)');
   console.error('');
   console.error('Options:');
   console.error('  --file <path>     Import from Wallos JSON export file');

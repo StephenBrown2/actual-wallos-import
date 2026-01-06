@@ -35,9 +35,6 @@ npx ts-node actual-wallos-import.ts --file subscriptions.json
 
 # With default account
 npx ts-node actual-wallos-import.ts --file subscriptions.json --account "Credit Card"
-
-# Legacy positional arguments also work
-npx ts-node actual-wallos-import.ts subscriptions.json "Credit Card"
 ```
 
 ### From Wallos API (Direct)
@@ -75,7 +72,6 @@ npx ts-node actual-wallos-import.ts --api --account "Credit Card"
 Usage:
   npx ts-node actual-wallos-import.ts --file <subscriptions.json> [--account <name>]
   npx ts-node actual-wallos-import.ts --api [--account <name>]
-  npx ts-node actual-wallos-import.ts <subscriptions.json> [account-name]  (legacy)
 
 Options:
   --file <path>     Import from Wallos JSON export file
