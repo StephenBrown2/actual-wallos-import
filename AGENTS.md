@@ -7,6 +7,7 @@ Single-file TypeScript CLI tool that imports subscription data from [Wallos](htt
 ## Architecture
 
 **Single entry point**: All logic lives in [actual-wallos-import.ts](../actual-wallos-import.ts) (~640 lines), organized into clear sections:
+
 - **Types** (lines 28-80): `WallosSubscription`, `ParsedWallosSubscription`, `RecurConfig`, `Account`
 - **Interactive prompts** (lines 85-145): readline-based user input for account selection
 - **Parsers** (lines 150-300): Payment cycle parsing, price parsing, JSON/API response handling
@@ -17,25 +18,31 @@ Single-file TypeScript CLI tool that imports subscription data from [Wallos](htt
 ## Key Patterns
 
 ### Amount Handling
+
 Amounts are stored as **negative integers in cents** (expenses are negative):
+
 ```typescript
 // Convert to cents, negate for expense
 amount: -Math.round(price * 100)
 ```
 
 ### Payment Cycle Parsing
+
 The `parsePaymentCycle()` function handles various Wallos formats → Actual's frequency/interval:
+
 - Simple: "monthly", "yearly", "weekly", "daily"
-- Interval: "Every 2 Months", "Every 3 Weeks"  
+- Interval: "Every 2 Months", "Every 3 Weeks"
 - Special: "Quarterly" → monthly/3, "Biweekly" → weekly/2
 
 ### Account Matching Priority
+
 1. Payment method name matches account name
-2. Notes field matches account name  
+2. Notes field matches account name
 3. Default account from `--account` flag
 4. Interactive prompt (user selects from list)
 
 ### Error Handling
+
 Uses `console.warn` for recoverable issues (unrecognized payment cycles default to monthly), throws for fatal errors (invalid file format, API failures).
 
 ## Development Commands
@@ -52,6 +59,8 @@ npx ts-node actual-wallos-import.ts --api --account "Credit Card"
 
 Prefer **jujutsu (`jj`)** over git when available. Fall back to git if `jj` is not installed.
 
+**Branching model**: Development happens directly on `main`. No feature branches—commit and push to `main` directly.
+
 ```bash
 # Check status
 jj st          # preferred
@@ -60,6 +69,11 @@ git status     # fallback
 # View log
 jj log         # preferred
 git log        # fallback
+
+# Push changes to main (jj)
+jj commit -m "<description>"
+jj bookmark set main -r @-  # point main at the commit (not the working copy)
+jj git push --bookmark main
 ```
 
 ## Environment Variables
